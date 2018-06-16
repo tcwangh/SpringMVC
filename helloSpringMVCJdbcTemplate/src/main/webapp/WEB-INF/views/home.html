@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Contact</title>
+	<!--  BEGIN STYLE -->
+	<style>
+		table, th, td {
+    		border: 1px solid black;
+    		padding: 1px;
+		}
+	</style>
+	<!--  END STYLE -->
+</head>
+<body>
+	<div>
+ 		<h2>Contact List</h2>
+ 		<table>
+ 			<thead>
+ 				<tr>
+ 					<th>ID</th>
+ 					<th>Name</th>
+ 					<th>E-Mail</th>
+ 					<th>Address</th>
+ 					<th>Telephone</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr th:each="contacts : ${contacts}">
+ 					<td th:text="${contacts.id}">Text ...</td>
+ 					<td th:text="${contacts.name}">Text ...</td>
+ 					<td th:text="${contacts.email}">Text ...</td>
+		 			<td th:text="${contacts.address}">Text...</td>
+		 			<td th:text="${contacts.telephone}">Text...</td>
+ 				</tr>
+ 			</tbody>
+ 		</table>
+ 	</div>
+ 	
+ 	<!--  begin form for finding at risk dogs -->
+ 	<h2>Find Contact</h2>
+ 	<form action="#" th:action="@{/}" th:object="${search}">
+ 		<label for="search_input">Search:</label> 
+ 		<input name="search" id="search"  ></input>
+ 		<input type="submit" value="Submit" />
+ 		<div th:if="${not #lists.isEmpty(search)}">
+ 		<h3>Search Results Of At Risk Dogs</h3>
+ 		<table>
+ 			<thead>
+ 				<tr>
+ 					<th>ID</th>
+ 					<th>Name</th>
+ 					<th>E-Mail</th>
+ 					<th>Address</th>
+ 					<th>Telephone</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr th:each="search : ${search}">
+ 					<td th:text="${search.id}">Text ...</td>
+ 					<td th:text="${search.name}">Text ...</td>
+ 					<td th:text="${search.email}">Text ...</td>
+ 					<td th:text="${search.address}">Text...</td>
+ 					<td th:text="${search.telephone}">Text...</td>
+ 				</tr>
+ 			</tbody>
+ 		</table>
+ 		</div>
+ 	</form>
+ 	
+ 	<div>
+ 		<h2>Add A Contact</h2>
+ 			<form action="#" th:action="@{/}" th:object="${contact}" method="post">
+ 			<!--  
+ 				<label>Name<input type="text" th:field="*{name}"></input></label>
+ 				<label>Email<input type="text" th:field="*{email}"></input></label>
+ 				<label>Address<input type="text" th:field="*{address}"></input></label>
+ 				<label>Telephone<input type="text" th:field="telephone"></input></label>
+ 				<input type="submit" value="Submit"></input>
+ 			-->
+ 				<label>Name<input type="text" name="name" id="name"></input></label>
+ 				<label>Email<input type="text" name="email" id="email"></input></label>
+ 				<label>Address<input type="text" name="address" id="address"></input></label>
+ 				<label>Telephone<input type="text" name="telephone" id="telephone"></input></label>
+ 				<input type="submit" value="Submit"></input>
+  			</form>
+ 	</div>
+ 	
+ 	<div>
+ 		<h2>Delete A Contact</h2>
+ 			<form action="/delete" th:action="@{/delete}" method="post">
+ 				<label>ID<input type="text" name="id" id="id"></input></label>
+ 				<input type="submit" value="Submit"></input>
+ 			</form>
+	</div>
+ 	
+ 	<P th:inline="text">  The time on the server is [[${serverTime}]]. </P>
+</body>
+</html>

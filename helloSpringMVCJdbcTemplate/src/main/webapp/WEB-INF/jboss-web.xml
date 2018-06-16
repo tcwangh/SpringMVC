@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>/helloThymeleafJdbc</context-root>
+</jboss-web>
