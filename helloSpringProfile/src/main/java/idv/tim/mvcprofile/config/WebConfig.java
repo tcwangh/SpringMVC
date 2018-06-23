@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -19,14 +20,10 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
-import idv.tim.mvcprofile.dao.ContactDao;
-import idv.tim.mvcprofile.dao.ContactDaoImpl;
-
-
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("idv.tim.mvcprofile.config")
+@ComponentScan({"idv.tim.mvcprofile.config","idv.tim.mvcprofile.dao"})
 @PropertySource(value= {"classpath:application.properties"})
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
   private ApplicationContext applicationContext;
@@ -83,11 +80,17 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     return resolver;
   }
     
-  
   @Bean
-  public ContactDao getContactDAO() throws IllegalArgumentException, NamingException {
-      return new ContactDaoImpl(dataSourceConfig.getDataSource());
+  public JdbcTemplate jdbcTemplate() throws IllegalArgumentException, NamingException {
+      JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceConfig.getDataSource());
+      jdbcTemplate.setResultsMapCaseInsensitive(true);
+      return jdbcTemplate;
   }
+  
+  //@Bean
+  //public ContactDao getContactDAO() throws IllegalArgumentException, NamingException {
+  //    return new ContactDaoImpl(dataSourceConfig.getDataSource());
+  //}
   
   @Override
   public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

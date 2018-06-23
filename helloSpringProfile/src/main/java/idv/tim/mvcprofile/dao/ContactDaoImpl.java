@@ -3,19 +3,20 @@ package idv.tim.mvcprofile.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
+import org.springframework.stereotype.Repository;
 import idv.tim.mvcprofile.model.Contact;
 
-
+@Repository
+@Qualifier("contactDAO")
 public class ContactDaoImpl implements ContactDao {
+	
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public ContactDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 	@Override
     public int saveOrUpdate(Contact contact) {
 		int result = 0;
