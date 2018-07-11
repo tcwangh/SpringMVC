@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>/helloSpringData</context-root>
+</jboss-web>
