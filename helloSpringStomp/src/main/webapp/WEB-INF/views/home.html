@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Contact</title>
+	<!--  BEGIN STYLE -->
+	<style>
+		table, th, td {
+    		border: 1px solid black;
+    		padding: 1px;
+		}
+	</style>
+	<!--  END STYLE -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="resources/stomp-2.3.3.min.js"></script>
+	<script src="//cdn.bootcss.com/sockjs-client/1.0.3/sockjs.js"></script>
+	<script type="text/javascript">
+		var stompClient = null;
+		function setConnected(connected) {
+            document.getElementById('connect').disabled = connected;
+            document.getElementById('disconnect').disabled = !connected;
+            document.getElementById('calculationDiv').style.visibility = connected ? 'visible' : 'hidden';
+            document.getElementById('calResponse').innerHTML = '';
+        }
+		function connect() {
+            var socket = new SockJS('/helloSpringStomp/add');
+			stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/showResult', function(calResult){
+                	showResult(JSON.parse(calResult.body).result);
+                });
+            });
+        }
+		function disconnect() {
+            stompClient.disconnect();
+            setConnected(false);
+            console.log("Disconnected");
+        }
+		function sendNum() {
+            var num1 = document.getElementById('num1').value;
+            var num2 = document.getElementById('num2').value;
+            stompClient.send("/calcApp/add", {}, JSON.stringify({ 'num1': num1, 'num2': num2 }));
+        }
+		function showResult(message) {
+            var response = document.getElementById('calResponse');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+	</script>
+</head>
+<body>
+	<div>
+ 		<h2>Contact List</h2>
+ 		<table>
+ 			<thead>
+ 				<tr>
+ 					<th>ID</th>
+ 					<th>Name</th>
+ 					<th>E-Mail</th>
+ 					<th>Address</th>
+ 					<th>Telephone</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr th:each="contacts : ${contacts}">
+ 					<td th:text="${contacts.id}">Text ...</td>
+ 					<td th:text="${contacts.name}">Text ...</td>
+ 					<td th:text="${contacts.email}">Text ...</td>
+		 			<td th:text="${contacts.address}">Text...</td>
+		 			<td th:text="${contacts.telephone}">Text...</td>
+ 				</tr>
+ 			</tbody>
+ 		</table>
+ 	</div>
+ 	
+ 	<!--  begin form for finding at risk dogs -->
+ 	<h2>Find Contact</h2>
+ 	<form action="#" th:action="@{/}" th:object="${search}">
+ 		<label for="search_input">Search:</label> 
+ 		<input name="search" id="search"  ></input>
+ 		<input type="submit" value="Submit" />
+ 		<div th:if="${not #lists.isEmpty(search)}">
+ 		<h3>Search Results Of At Risk Dogs</h3>
+ 		<table>
+ 			<thead>
+ 				<tr>
+ 					<th>ID</th>
+ 					<th>Name</th>
+ 					<th>E-Mail</th>
+ 					<th>Address</th>
+ 					<th>Telephone</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr th:each="search : ${search}">
+ 					<td th:text="${search.id}">Text ...</td>
+ 					<td th:text="${search.name}">Text ...</td>
+ 					<td th:text="${search.email}">Text ...</td>
+ 					<td th:text="${search.address}">Text...</td>
+ 					<td th:text="${search.telephone}">Text...</td>
+ 				</tr>
+ 			</tbody>
+ 		</table>
+ 		</div>
+ 	</form>
+ 	
+ 	<div>
+ 		<h2>Add A Contact</h2>
+ 			<form action="#" th:action="@{/}" th:object="${contact}" method="post">
+ 			<!--  
+ 				<label>Name<input type="text" th:field="*{name}"></input></label>
+ 				<label>Email<input type="text" th:field="*{email}"></input></label>
+ 				<label>Address<input type="text" th:field="*{address}"></input></label>
+ 				<label>Telephone<input type="text" th:field="telephone"></input></label>
+ 				<input type="submit" value="Submit"></input>
+ 			-->
+ 				<label>Name<input type="text" name="name" id="name"></input></label>
+ 				<label>Email<input type="text" name="email" id="email"></input></label>
+ 				<label>Address<input type="text" name="address" id="address"></input></label>
+ 				<label>Telephone<input type="text" name="telephone" id="telephone"></input></label>
+ 				<input type="submit" value="Submit"></input>
+  			</form>
+ 	</div>
+ 	
+ 	<div>
+ 		<h2>Delete A Contact</h2>
+ 			<form action="/delete" th:action="@{/delete}" method="post">
+ 				<label>ID<input type="text" name="id" id="id"></input></label>
+ 				<input type="submit" value="Submit"></input>
+ 			</form>
+	</div>
+	
+	<div>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button><br/><br/>
+    </div>
+    <div id="calculationDiv">
+        <label>Number One:</label><input type="text" id="num1" /><br/>
+        <label>Number Two:</label><input type="text" id="num2" /><br/><br/>
+        <button id="sendNum" onclick="sendNum();">Send to Add</button>
+        <p id="calResponse"></p>
+    </div>
+ 	
+ 	<P th:inline="text">  The time on the server is [[${serverTime}]]. </P>
+</body>
+</html>
