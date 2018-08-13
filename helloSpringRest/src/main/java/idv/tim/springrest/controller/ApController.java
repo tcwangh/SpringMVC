@@ -23,9 +23,10 @@ import idv.tim.springrest.model.Contact;
 import idv.tim.springrest.persistence.ContactRepository;
 
 @RestController
+@RequestMapping(value="/restapi")
 public class ApController {
 	
-private static final Logger logger = LoggerFactory.getLogger(ApController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApController.class);
 	
 	@Autowired
 	private ContactRepository contactRepository;
@@ -51,11 +52,11 @@ private static final Logger logger = LoggerFactory.getLogger(ApController.class)
 		return responseEntity;
 	}
 	
-	@ExceptionHandler(ContactNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public Error contactNotFound(ContactNotFoundException e) {
-		String contactId = e.getContactId();
-		return new Error("Contact [" + contactId + "] not found");
-	}
+	//@ExceptionHandler(ContactNotFoundException.class)
+	//@ResponseStatus(HttpStatus.NOT_FOUND)
+	//public Error contactNotFound(ContactNotFoundException e) {
+	//	String contactId = e.getContactId();
+	//	return new Error("Contact [" + contactId + "] not found");
+	//}
 
 }

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages="idv.tim.springdata.persistence", entityManagerFactoryRef = "getEntityManagerFactoryBean")
+@EnableJpaRepositories(basePackages="idv.tim.springboot.persistence", entityManagerFactoryRef = "getEntityManagerFactoryBean")
 public class EclipseLinkJpaConfiguration{
 	
 	@Bean
