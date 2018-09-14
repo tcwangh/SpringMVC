@@ -6,6 +6,7 @@ import javax.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.util.Log4jConfigListener;
 
 public class WebAppInitializer implements WebApplicationInitializer{
 	
@@ -17,6 +18,8 @@ public class WebAppInitializer implements WebApplicationInitializer{
 		ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
+		
+		
 	
 	}
 

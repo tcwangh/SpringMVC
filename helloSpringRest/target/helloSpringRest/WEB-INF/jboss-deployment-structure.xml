@@ -4,6 +4,7 @@
 		<dependencies>
 			<module name="com.h2database.h2" />
 		</dependencies>
+		<!-- Exclusions allow you to prevent the server from automatically adding some dependencies -->
 		<exclusions>
 			<module name="org.apache.log4j" />
 		</exclusions>
