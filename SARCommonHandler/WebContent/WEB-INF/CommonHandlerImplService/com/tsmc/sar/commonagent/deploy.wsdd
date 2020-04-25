@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from CommonHandlerImplService WSDL service -->
+
+  <service name="CommonHandlerImpl" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://commonagent.sar.tsmc.com"/>
+      <parameter name="wsdlServiceElement" value="CommonHandlerImplService"/>
+      <parameter name="schemaQualified" value="http://commonagent.sar.tsmc.com"/>
+      <parameter name="wsdlServicePort" value="CommonHandlerImpl"/>
+      <parameter name="className" value="com.tsmc.sar.commonagent.CommonHandlerImpl"/>
+      <parameter name="wsdlPortType" value="CommonHandlerImpl"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://commonagent.sar.tsmc.com" xmlns:retNS="http://commonagent.sar.tsmc.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="manageEventHandlerRequest_Sync" qname="operNS:manageEventHandlerRequest_Sync" returnQName="retNS:manageEventHandlerRequest_SyncReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://commonagent.sar.tsmc.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:x0" type="tns:string"/>
+        <parameter xmlns:pns="http://commonagent.sar.tsmc.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:x1" type="tns:string"/>
+        <parameter xmlns:pns="http://commonagent.sar.tsmc.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:x2" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://commonagent.sar.tsmc.com" xmlns:retNS="http://commonagent.sar.tsmc.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="manageTimerHandlerRequest_Sync" qname="operNS:manageTimerHandlerRequest_Sync" returnQName="retNS:manageTimerHandlerRequest_SyncReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://commonagent.sar.tsmc.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:x0" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="manageTimerHandlerRequest_Sync manageEventHandlerRequest_Sync"/>
+
+  </service>
+</deployment>
